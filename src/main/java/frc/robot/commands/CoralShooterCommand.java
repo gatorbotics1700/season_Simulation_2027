@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralShooterSubsystem;
 
@@ -11,12 +14,19 @@ import frc.robot.subsystems.CoralShooterSubsystem;
 public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
   // a variable to keep track of our voltage, and one to track the start time of the command
+CoralShooterSubsystem coralShooter;
+double coralShooterVoltage = 0;
+double startTime = 0;
 
   /* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
 
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
     /* TODO: assign the values of the parameters to the variables you instantiated */
+    coralShooter = coralShooterSubsystem;
+    coralShooterVoltage = voltage;
+    
+
     addRequirements(coralShooterSubsystem);
   }
 
@@ -25,8 +35,9 @@ public class CoralShooterCommand extends Command {
   public void initialize() {
     /* TODO: initialize the start time variable with the current time */
     // HINT: System.currentTimeMillis() gets you the current time
+      startTime = System.currentTimeMillis();
   }
-
+    
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -38,8 +49,16 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
     /* TODO: set motor voltage */
+     coralShooter.setDefaultCommand(coralShooterVoltage);
 
     /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+     
+    if (coralShooterVoltage > 0) {
+      print("running");
+    } else {
+      print ("not running");
+    } 
+
   }
 
   // Returns true when the command should end.
@@ -57,10 +76,16 @@ public class CoralShooterCommand extends Command {
     /* TODO: calculate how much time has passed and store it in a variable */
     // you have the start time and can get the current time
     // this value is stored in milliseconds
+     double endTime = System.currentTimeMillis();
 
     /* TODO: write the logic for when to end the command */
     // refer to the descriptions above to write this part
-
+      if (Voltage = 0 )) {
+        print ("end")
+        speed = zero;
+      } else {
+        print ("continue")
+      }
     return true;
   }
 }
