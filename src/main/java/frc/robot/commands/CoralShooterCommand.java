@@ -12,18 +12,20 @@ public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
   // a variable to keep track of our voltage, and one to track the start time of the command
 
-  /* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
-
+  public class CoralShooterSubsystem coralShooterSubsystem;/* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  public double shooterMotorVoltage;
+  public long shooterStartTime;
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
-    /* TODO: assign the values of the parameters to the variables you instantiated */
+    this.coralShooterSubsystem = coralShooterSubsystem;
+    this.shooterMotorVoltage = shooterMotorVoltage;/* TODO: assign the values of the parameters to the variables you instantiated */
     addRequirements(coralShooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    /* TODO: initialize the start time variable with the current time */
+    System.currentTimeMillis(shooterStartTime);/* TODO: initialize the start time variable with the current time */
     // HINT: System.currentTimeMillis() gets you the current time
   }
 

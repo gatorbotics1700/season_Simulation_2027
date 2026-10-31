@@ -26,7 +26,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // Subsystems
   /* TODO: Declare and instantiate a Coral Shooter Subsystem */
-
+  public ShooterSubsystem CoralShooterSubsystem;
+  CoralShooterSubsystem = new ShooterSubsystem();
   // Controller
   private final CommandXboxController codriver = new CommandXboxController(1);
 
@@ -54,5 +55,9 @@ public class RobotContainer {
     // Constants.CLIMBING_SPEED));
 
     /* TODO: Assign buttons A, B, X, and Y on the Xbox Controller */
+    codriver.a().onTrue(new ShooterCommand(CoralShooterSubsystem, Constants.L4_SHOOTING_VOLTAGE));
+    codriver.b().onTrue(new ShooterCommand(CoralShooterSubsystem, Constants.THROUGH_SHOOTING_VOLTAGE));
+    codriver.x().onTrue(new ShooterCommand(CoralShooterSubsystem, Constants.INTAKE_VOLTAGE));
+    codriver.a().onTrue(new ShooterCommand(CoralShooterSubsystem, 0.0));
   }
 }
