@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CoralShooterSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -13,10 +14,15 @@ public class CoralShooterCommand extends Command {
   // a variable to keep track of our voltage, and one to track the start time of the command
 
   /* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  private final CoralShooterSubsystem coralShooterSubsystem;
+  private final double voltage;
+  private long startTime;
 
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
     /* TODO: assign the values of the parameters to the variables you instantiated */
+    this.coralShooterSubsystem = coralShooterSubsystem;
+    this.voltage = voltage;
     addRequirements(coralShooterSubsystem);
   }
 
@@ -25,6 +31,7 @@ public class CoralShooterCommand extends Command {
   public void initialize() {
     /* TODO: initialize the start time variable with the current time */
     // HINT: System.currentTimeMillis() gets you the current time
+    this.startTime = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,8 +45,15 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
     /* TODO: set motor voltage */
-
+    coralShooterSubsystem.setMotorVoltage(voltage);
     /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    if (voltage > 0) {
+      System.out.println("Intaking");
+    } else if (voltage == Constants.L4_SHOOTING_VOLTAGE) {
+      System.out.println("Shooting L4");
+    } else if (voltage == Constants.TROUGH_SHOOTING_VOLTAGE) {
+      System.out.println("Shooting Trough");
+    }
   }
 
   // Returns true when the command should end.
@@ -57,10 +71,27 @@ public class CoralShooterCommand extends Command {
     /* TODO: calculate how much time has passed and store it in a variable */
     // you have the start time and can get the current time
     // this value is stored in milliseconds
-
+    long currentTime = System.currentTimeMillis();
+    long elapsedTime = currentTime - startTime;
     /* TODO: write the logic for when to end the command */
     // refer to the descriptions above to write this part
-
+    if (voltage > 0) {
+      if (elapsedTime >= 5000 || coralShooterSubsystem.isLimitSwitchTriggered()) {
+        System.out.println("Ending command: Intaking");
+        coralShooterSubsystem.setMotorVoltage(0);
+        return true;
+      }
+    } else if (voltage == 0) {
+      System.out.println("Ending command: Voltage is zero");
+      coralShooterSubsystem.setMotorVoltage(0);
+      return true;
+    } else if (voltage < 0) {
+      if (elapsedTime >= 1500) {
+        System.out.println("Ending command: Outtaking");
+        coralShooterSubsystem.setMotorVoltage(0);
+        return true;
+      }
+    }
     return true;
   }
 }

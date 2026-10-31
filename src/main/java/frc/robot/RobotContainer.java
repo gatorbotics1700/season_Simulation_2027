@@ -16,6 +16,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.CoralShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   // Subsystems
   /* TODO: Declare and instantiate a Coral Shooter Subsystem */
-
+  private final CoralShooterSubsystem coralShooterSubsystem = new CoralShooterSubsystem();
   // Controller
   private final CommandXboxController codriver = new CommandXboxController(1);
 
@@ -54,5 +55,9 @@ public class RobotContainer {
     // Constants.CLIMBING_SPEED));
 
     /* TODO: Assign buttons A, B, X, and Y on the Xbox Controller */
-  }
+    cdriver.a().onTrue(new ShootL4Command(coralShooterSubsystem, Constants.L4_SHOOTING_VOLTAGE));
+    cdriver.b().onTrue(new ShootTroughCommand(coralShooterSubsystem, Constants.TROUGH_SHOOTING_VOLTAGE));
+    cdriver.x().onTrue(new IntakeCommand(coralShooterSubsystem, Constants.INTAKE_VOLTAGE));
+    cdriver.y().onTrue(new StopCommand(coralShooterSubsystem));
+  } 
 }

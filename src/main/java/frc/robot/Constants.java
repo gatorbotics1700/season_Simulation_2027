@@ -6,10 +6,13 @@ public final class Constants {
   // create constants for the CAN IDs of the left and right shooter motors
   // you can either put placeholder values of 0 or assign a number to these
   /* TODO: put your motor ids here */
+  public static final int LEFT_SHOOTER_MOTOR_ID = 0;
+  public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
 
   // add a constant for the limit switch port
   // this can either be a placeholder (0) or a value 0 - 9
   /* TODO: put your limit switch port here */
+  public static final int LIMIT_SWITCH_PORT = 0;
 
   // you need constants for the shooting voltages
   // the voltage we give it can be a whole number or a decimal value
@@ -17,4 +20,7 @@ public final class Constants {
   // voltage
   // shooting voltages should be negative, and the L4 value should be larger
   /* TODO: put your shooting voltages here */
+  public static final double L4_SHOOTING_VOLTAGE = -12.0;
+  public static final double TROUGH_SHOOTING_VOLTAGE = -6.0;
+  public static final double INTAKE_VOLTAGE = 6.0;
 }
