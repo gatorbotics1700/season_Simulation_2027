@@ -16,6 +16,7 @@ import frc.robot.Constants;
 public class CoralShooterSubsystem extends SubsystemBase {
   // You need to have two TalonFX motors (left and right) and a DigitalInput limit switch
   /* TODO: declare your motors and limit switch here */
+  //TODO from Vivien: make sure to keep instance variables like these ones private. if another subsystem had a left and right motor, it might cause some issues! 
   public final TalonFX leftMotor;
   public final TalonFX rightMotor;
   public final DigitalInput limitSwitch;
@@ -37,6 +38,7 @@ public class CoralShooterSubsystem extends SubsystemBase {
     // You must also instantiate your limit switch by creating a new DigitalInput object
     // Make sure to use the limit switch constant in Constants.java
     /* TODO: instantiate your limit switch here */
+    // TODO from Vivien: instead of just saying 2 here, actually use the Constants.LIMIT_SWITCH_PORT
     limitSwitch = new DigitalInput(2);
     //I wasn't sure what to put here, I just put 2 because that was the port I assigned it???
   }
