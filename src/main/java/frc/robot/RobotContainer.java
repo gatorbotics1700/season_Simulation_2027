@@ -16,6 +16,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.CoralShooterCommand;
+import frc.robot.subsystems.CoralShooterSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
  */
 public class RobotContainer {
   // Subsystems
-  /* TODO: Declare and instantiate a Coral Shooter Subsystem */
+  private final CoralShooterSubsystem coralShooter = new CoralShooterSubsystem();/* TODO: Declare and instantiate a Coral Shooter Subsystem */
 
   // Controller
   private final CommandXboxController codriver = new CommandXboxController(1);
@@ -42,10 +44,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // We need buttons for:
-    // 1. Shooting L4
-    // 2. Shooting Trough
-    // 3. Intaking
+   codriver.a().onTrue(new CoralShooterCommand(coralShooter, ShootingL4)); // We need buttons for:
+    codriver.b().onTrue(new CoralShooterCommand(coralShooter, shootingTrough));// 1. Shooting L4
+    codriver.x().onTrue(new CoralShooterCommand(coralShooter, IsIntaking));// 2. Shooting Trough
+    codriver.y().onTrue(new CoralShooterCommand(coralShooter, break));// 3. Intaking
     // 4. Stop
 
     // How to set up an Xbox Controller button:
