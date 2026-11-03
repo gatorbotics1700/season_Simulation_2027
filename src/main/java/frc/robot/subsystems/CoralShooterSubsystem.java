@@ -43,15 +43,18 @@ public class CoralShooterSubsystem extends SubsystemBase {
   /* TODO: write a method to set motor voltage
    * You can use the TalonFX method setVoltage() on each motor to give the motor the voltages
    */
-  public void MotorVoltage(double voltage);{
+  public void setRightMotorVoltage(double voltage);{
     rightMotor.setVoltage(voltage);
+    
+  public void setLeftMotorVoltage(double voltage);{
     leftMotor.setVoltage(voltage);
   }
   /* TODO: write a method to get the limit switch value
    * You can use the DigitalInput method get()
    */
-  public void limitSwitchValue(double value){
+  public double limitSwitchValue(){
     limitSwitch.get(value);
+      return value;
   }
 
 }

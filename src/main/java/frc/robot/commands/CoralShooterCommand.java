@@ -12,11 +12,11 @@ public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
   // a variable to keep track of our voltage, and one to track the start time of the command
 
-  public class CoralShooterSubsystem coralShooterSubsystem;/* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  public class CoralShooterSubsystem coralShooterSubsystem(CoralShooterSubsystem coralShooterSubsystem, double voltage);/* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
   public double shooterMotorVoltage;
   public long shooterStartTime;
   /** Creates a new CoralShooterCommand. */
-  public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
+  public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {// come back to this
     this.coralShooterSubsystem = coralShooterSubsystem;
     this.shooterMotorVoltage = shooterMotorVoltage;/* TODO: assign the values of the parameters to the variables you instantiated */
     addRequirements(coralShooterSubsystem);
@@ -40,8 +40,16 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
     /* TODO: set motor voltage */
-
+    setLeftMotorVoltage = shooterMotorVoltage;
+    setRightMotorVoltage = shooterMotorVoltage
     /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    if(shooterMotorVoltage>0){
+      System.out.println("we're intaking");
+    }else if(shooterMotorVoltage==L4_SHOOTING_VOLTAGE){
+      System.out.println("we're shooting l4");
+    }else(shooterMotorVoltage==THROUGH_SHOOTING_VOLTAGE){
+      System.out.println("we're shooting trough");
+    }
   }
 
   // Returns true when the command should end.
@@ -59,10 +67,28 @@ public class CoralShooterCommand extends Command {
     /* TODO: calculate how much time has passed and store it in a variable */
     // you have the start time and can get the current time
     // this value is stored in milliseconds
-
+    long currentTime = System.currentTimeMillis();
+    long timePassed = currentTime - startTime;
     /* TODO: write the logic for when to end the command */
     // refer to the descriptions above to write this part
+    if(shooterMotorVoltage>0){
+      if(timePassed>=5000 || limitSwitch==true){
+        if(timePassed>=5000){
+          System.out.println("command ended, 5 second intake reached");
+        }else{
+          System.out.println("command ended, limit switch triggered");
+        }
+        motor.setVoltage(0);
+        return true;
+      }
+    }else if(outtaking){
+      if(timePassed>=1500){
+        System.out.println("command ended, 1.5 second outtake reached");
 
-    return true;
+        motor.setVoltage(0);
+        return true;
+      }
+    }
+    return false;
   }
 }
