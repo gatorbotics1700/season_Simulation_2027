@@ -13,10 +13,15 @@ public class CoralShooterCommand extends Command {
   // a variable to keep track of our voltage, and one to track the start time of the command
 
   /* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  private final CoralShooterSubsystem coralShooterSubsystem;
+  private final double coralShooterVoltage;
+  private long startTime;
 
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
     /* TODO: assign the values of the parameters to the variables you instantiated */
+    this.coralShooterSubsystem = coralShooterSubsystem;
+    this.coralShooterVoltage = voltage;
     addRequirements(coralShooterSubsystem);
   }
 
@@ -24,6 +29,7 @@ public class CoralShooterCommand extends Command {
   @Override
   public void initialize() {
     /* TODO: initialize the start time variable with the current time */
+    startTime = System.currentTimeMillis();
     // HINT: System.currentTimeMillis() gets you the current time
   }
 
@@ -38,9 +44,15 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
     /* TODO: set motor voltage */
-
+    coralShooterSubsystem.setMotorVoltage(coralShooterVoltage);
     /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
-  }
+    if (coralShooterVoltage > 0) {
+    System.out.println("Intaking coral");
+} else if (coralShooterVoltage == coralShooterSubsystem.L4_SHOOTING_VOLTAGE) {
+    System.out.println("Shooting coral at L4");
+} else if (coralShooterVoltage == coralShooterSubsystem.TROUGH_SHOOTING_VOLTAGE) {
+    System.out.println("Shooting coral at trough"); 
+}
 
   // Returns true when the command should end.
   @Override
@@ -55,12 +67,17 @@ public class CoralShooterCommand extends Command {
     // otherwise, we want to return false
 
     /* TODO: calculate how much time has passed and store it in a variable */
+    double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
     // you have the start time and can get the current time
     // this value is stored in milliseconds
 
     /* TODO: write the logic for when to end the command */
+    if (coralShooterVoltage == 0) {
+    coralShooterSubsystem.setMotorVoltage(0);
+    System.out.println("Command ended: voltage is zero");
+    return true;
+    }
     // refer to the descriptions above to write this part
 
-    return true;
-  }
-}
+   
+

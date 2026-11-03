@@ -2,16 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "wpilib",
-      "name": "WPILib Desktop Debug",
+      "type": "java",
+      "name": "Main",
       "request": "launch",
-      "desktop": true
-    },
-    {
-      "type": "wpilib",
-      "name": "WPILib roboRIO Debug",
-      "request": "launch",
-      "desktop": false
+      "mainClass": "frc.robot.Main",
+      "projectName": "season_Simulation_2027"
     }
   ]
 }
