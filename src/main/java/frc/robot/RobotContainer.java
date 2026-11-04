@@ -58,6 +58,7 @@ public class RobotContainer {
     // Constants.CLIMBING_SPEED));
 
     /* TODO: Assign buttons A, B, X, and Y on the Xbox Controller */
+    //TODO from Vivien: perfect!
     codriver.a().onTrue(
       new CoralShooterCommand(coralShooterSubsystem, Constants.INTAKE_VOLTAGE));
 

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CoralShooterSubsystem;
 
+//TODO from Vivien: watch out for your curly brackets {} you have a lot missing and it causes a lot of syntax errors
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
@@ -46,6 +47,7 @@ public class CoralShooterCommand extends Command {
     /* TODO: set motor voltage */
     coralShooterSubsystem.setMotorVoltage(coralShooterVoltage);
     /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    //TODO from Vivien: the l4 and trough shooting voltages are constants, so we get them by saying Constants. not through the subsystem
     if (coralShooterVoltage > 0) {
     System.out.println("Intaking coral");
 } else if (coralShooterVoltage == coralShooterSubsystem.L4_SHOOTING_VOLTAGE) {
@@ -57,26 +59,33 @@ public class CoralShooterCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if we're intaking, we want to end either if it's been 5 seconds or the limit switch is
+    // #1 if we're intaking, we want to end either if it's been 5 seconds or the limit switch is
     // triggered
     // the limit switch is triggered if the value it's getting is true
-    // if our voltage is zero, we can just end, but to be safe also set speed to zero
-    // if we're outtaking, we want to end if it's been 1.5 seconds
+    // #2 if our voltage is zero, we can just end, but to be safe also set speed to zero
+    // #3 if we're outtaking, we want to end if it's been 1.5 seconds
     // in each case, we want to print what's causing the command to end,
     // set the motor voltage to 0, and return true
     // otherwise, we want to return false
 
     /* TODO: calculate how much time has passed and store it in a variable */
+    //TODO from Vivien: love how you did a conversion! best practice is to have the variable name contain units
+    //ex. elapsedTimeSeconds
+    //also best practice is to make a constant that is MILLISECONDS_PER_SECOND and call that instead of just saying 1000
     double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0;
     // you have the start time and can get the current time
     // this value is stored in milliseconds
 
     /* TODO: write the logic for when to end the command */
+
+    //TODO from Vivien: you're missing a lot of the instructions above. you did #2 but pls do #1 and #3
     if (coralShooterVoltage == 0) {
     coralShooterSubsystem.setMotorVoltage(0);
     System.out.println("Command ended: voltage is zero");
     return true;
     }
+
+    //TODO from Vivien: the isFinished() method needs to ALWAYS return a boolean. rn you only return true sometimes
     // refer to the descriptions above to write this part
 
    
