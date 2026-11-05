@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -51,6 +50,7 @@ public class CoralShooterSubsystem extends SubsystemBase {
     leftMotor.setVoltage(voltage);
     rightMotor.setVoltage(voltage);
   }
+
   /* TODO: write a method to get the limit switch value
    * You can use the DigitalInput method get()
    */

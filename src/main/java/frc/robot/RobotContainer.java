@@ -56,8 +56,10 @@ public class RobotContainer {
 
     /* TODO: Assign buttons A, B, X, and Y on the Xbox Controller */
     cdriver.a().onTrue(new ShootL4Command(coralShooterSubsystem, Constants.L4_SHOOTING_VOLTAGE));
-    cdriver.b().onTrue(new ShootTroughCommand(coralShooterSubsystem, Constants.TROUGH_SHOOTING_VOLTAGE));
+    cdriver
+        .b()
+        .onTrue(new ShootTroughCommand(coralShooterSubsystem, Constants.TROUGH_SHOOTING_VOLTAGE));
     cdriver.x().onTrue(new IntakeCommand(coralShooterSubsystem, Constants.INTAKE_VOLTAGE));
     cdriver.y().onTrue(new StopCommand(coralShooterSubsystem));
-  } 
+  }
 }
