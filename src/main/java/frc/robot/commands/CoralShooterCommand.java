@@ -13,14 +13,15 @@ public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
   // a variable to keep track of our voltage, and one to track the start time of the command
 
-  /* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  /* declare the CoralShooterSubsystem, voltage, and start time variables here */
   private final CoralShooterSubsystem coralShooterSubsystem;
   private final double voltage;
+  // TODO from Vivien: we'd usually use doubles, but this is fine too
   private long startTime;
 
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
-    /* TODO: assign the values of the parameters to the variables you instantiated */
+    /* assign the values of the parameters to the variables you instantiated */
     this.coralShooterSubsystem = coralShooterSubsystem;
     this.voltage = voltage;
     addRequirements(coralShooterSubsystem);
@@ -29,7 +30,7 @@ public class CoralShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    /* TODO: initialize the start time variable with the current time */
+    /* initialize the start time variable with the current time */
     // HINT: System.currentTimeMillis() gets you the current time
     this.startTime = System.currentTimeMillis();
   }
@@ -44,9 +45,9 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the L4 shooting voltage, we're shooting l4
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
-    /* TODO: set motor voltage */
+    /* set motor voltage */
     coralShooterSubsystem.setMotorVoltage(voltage);
-    /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    /* add print statements depending on the voltage to indicate the state the shooter is currently in */
     if (voltage > 0) {
       System.out.println("Intaking");
     } else if (voltage == Constants.L4_SHOOTING_VOLTAGE) {
@@ -68,15 +69,18 @@ public class CoralShooterCommand extends Command {
     // set the motor voltage to 0, and return true
     // otherwise, we want to return false
 
-    /* TODO: calculate how much time has passed and store it in a variable */
+    /* calculate how much time has passed and store it in a variable */
     // you have the start time and can get the current time
     // this value is stored in milliseconds
+    // TODO from Vivien: love how you used two variables to make the code more readable!
     long currentTime = System.currentTimeMillis();
     long elapsedTime = currentTime - startTime;
-    /* TODO: write the logic for when to end the command */
+    /* write the logic for when to end the command */
     // refer to the descriptions above to write this part
     if (voltage > 0) {
       if (elapsedTime >= 5000 || coralShooterSubsystem.isLimitSwitchTriggered()) {
+        // TODO from Vivien: love the print statements, very helpful from debugging
+        // irl print statements can clog up the terminal so we use AdvantageScope + logging
         System.out.println("Ending command: Intaking");
         coralShooterSubsystem.setMotorVoltage(0);
         return true;
@@ -85,13 +89,16 @@ public class CoralShooterCommand extends Command {
       System.out.println("Ending command: Voltage is zero");
       coralShooterSubsystem.setMotorVoltage(0);
       return true;
-    } else if (voltage < 0) {
+    } else if (voltage
+        < 0) { // TODO from Vivien: you can technically just say else here but this is safer
       if (elapsedTime >= 1500) {
         System.out.println("Ending command: Outtaking");
         coralShooterSubsystem.setMotorVoltage(0);
         return true;
       }
     }
+    // TODO from Vivien: this line should instead say "return false". if you "return true" here this
+    // method always returns true and your command will end too early!
     return true;
   }
 }

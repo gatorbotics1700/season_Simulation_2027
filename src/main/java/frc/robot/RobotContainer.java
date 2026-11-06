@@ -55,6 +55,11 @@ public class RobotContainer {
     // Constants.CLIMBING_SPEED));
 
     /* TODO: Assign buttons A, B, X, and Y on the Xbox Controller */
+    // TODO from Vivien: structure is right but you have two errors here
+    // "cdriver" should be "codriver"
+    // the command is erroring bc you didn't use the name of your actual command. you should use
+    // "CoralShooterCommand" for all four. you make diff buttons for shooting and trough and
+    // intaking by changing the voltage, not by changing the name of the command
     cdriver.a().onTrue(new ShootL4Command(coralShooterSubsystem, Constants.L4_SHOOTING_VOLTAGE));
     cdriver
         .b()
