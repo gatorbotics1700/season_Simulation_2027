@@ -1,21 +1,44 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
-// TODO imports
+import frc.robot.subsystems.mech.ElevatorSubsystem;
 
 public class ElevatorCommand extends Command {
 
-  public ElevatorCommand() {}
+    private final ElevatorSubsystem elevatorSubsystem;
+    private final double rotations;
 
-  @Override
-  public void initialize() {}
+    // Allowed position error in motor rotations
+    private static final double ERROR = 1.0;
 
-  @Override
-  public void execute() {}
+    public ElevatorCommand(
+        double rotations,
+        ElevatorSubsystem elevatorSubsystem
+    ) {
+        this.rotations = rotations;
+        this.elevatorSubsystem = elevatorSubsystem;
 
-  @Override
-  public boolean isFinished() {
-    return true;
-  }
+        addRequirements(elevatorSubsystem);
+    }
+
+    @Override
+    public void initialize() {
+        elevatorSubsystem.setDesiredPosition(rotations);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return elevatorSubsystem.isHomed()
+            && elevatorSubsystem.atDesiredPosition(
+                rotations,
+                ERROR
+            );
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        if (interrupted) {
+            elevatorSubsystem.stop();
+        }
+    }
 }

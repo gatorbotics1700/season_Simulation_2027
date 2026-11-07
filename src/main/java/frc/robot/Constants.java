@@ -56,4 +56,7 @@ public final class Constants {
   // left and right offsets for the poles on the reef
   public static final Distance CENTER_TO_POLE_OFFSET = Centimeters.of(16.5);
   public static final Distance ROBOT_RADIUS_WITH_BUMPERS = Centimeters.of(57);
+
+  public static final double GEAR_RATIO = 5/1;
+  
 }
