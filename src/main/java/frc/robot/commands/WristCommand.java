@@ -14,9 +14,12 @@ public class WristCommand extends Command {
   public void execute() {}
 
   //TODO: Create a command to stop/start motors
-  //public static Command startWrist(WristSubsystem wrist){
+  public static Command startWrist(WristSubsystem wrist){
+    
 
-  //}
+
+
+  }
 
   //TODO: Create a command which affects the pitch (tilts up or down)
   //public static Command stopWrist(WristSubsystem wrist){
@@ -33,7 +36,15 @@ public class WristCommand extends Command {
     
   //}
   //TODO: Create a command which sets the wrist to a certain position
-  //public static Command setWristPosition(WristSubsystem wrist, double pitchDegrees, double rollDegrees){}
+  public static Command setWristPosition(WristSubsystem wrist, double pitchDegrees, double rollDegrees){
+    wrist.setPosition(pitchDegrees); //setting position of the wrist 
+    
+    
+
+  }
+
+
+
 
 
 
