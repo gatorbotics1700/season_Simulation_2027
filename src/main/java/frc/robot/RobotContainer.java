@@ -54,7 +54,8 @@ public class RobotContainer {
     // ex: codriver.rightBumper().onTrue(new ClimberCommand(climberSubsystem,
     // Constants.CLIMBING_SPEED));
 
-    /* TODO: Assign buttons A, B, X, and Y on the Xbox Controller */
+    /* Assign buttons A, B, X, and Y on the Xbox Controller */
+    //TODO from Vivien: this is all right you just accidentlly said "ShooterCommand" instead of "CoralShooterCommand"
     codriver.a().onTrue(new ShooterCommand(CoralShooterSubsystem, Constants.L4_SHOOTING_VOLTAGE));
     codriver.b().onTrue(new ShooterCommand(CoralShooterSubsystem, Constants.THROUGH_SHOOTING_VOLTAGE));
     codriver.x().onTrue(new ShooterCommand(CoralShooterSubsystem, Constants.INTAKE_VOLTAGE));

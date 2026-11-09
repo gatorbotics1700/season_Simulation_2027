@@ -11,20 +11,23 @@ import frc.robot.subsystems.CoralShooterSubsystem;
 public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
   // a variable to keep track of our voltage, and one to track the start time of the command
-
-  public class CoralShooterSubsystem coralShooterSubsystem(CoralShooterSubsystem coralShooterSubsystem, double voltage);/* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  //TODO from Vivien: you have some unnecessary stuff here, should instead be:
+  //public CoralShooterSubsystem viviensCoralShooterSubsystem;
+  public class CoralShooterSubsystem coralShooterSubsystem(CoralShooterSubsystem coralShooterSubsystem, double voltage);/* declare the CoralShooterSubsystem, voltage, and start time variables here */
   public double shooterMotorVoltage;
   public long shooterStartTime;
   /** Creates a new CoralShooterCommand. */
+  //TODO from Vivien: your constructor is flawless
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {// come back to this
     this.coralShooterSubsystem = coralShooterSubsystem;
-    this.shooterMotorVoltage = shooterMotorVoltage;/* TODO: assign the values of the parameters to the variables you instantiated */
+    this.shooterMotorVoltage = shooterMotorVoltage;/* assign the values of the parameters to the variables you instantiated */
     addRequirements(coralShooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //TODO from Vivien: System.currentTimeMillis() doesn't need a parameter. instead, you have to say that shooterStartTime equalssss the current time
     System.currentTimeMillis(shooterStartTime);/* TODO: initialize the start time variable with the current time */
     // HINT: System.currentTimeMillis() gets you the current time
   }
@@ -39,13 +42,15 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the L4 shooting voltage, we're shooting l4
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
-    /* TODO: set motor voltage */
+    /* set motor voltage */
+    //TODO from Vivien: you never actually call your methods here. to do that, you would say:
+    //coralShooterSubsystem.setLeftMotorVoltage(shooterMotorVoltage);
     setLeftMotorVoltage = shooterMotorVoltage;
     setRightMotorVoltage = shooterMotorVoltage
-    /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    /* add print statements depending on the voltage to indicate the state the shooter is currently in */
     if(shooterMotorVoltage>0){
       System.out.println("we're intaking");
-    }else if(shooterMotorVoltage==L4_SHOOTING_VOLTAGE){
+    }else if(shooterMotorVoltage==L4_SHOOTING_VOLTAGE){//TODO from Vivien: when you use this constant you have to say Constants.L4_SHOOTING_VOLTAGE
       System.out.println("we're shooting l4");
     }else(shooterMotorVoltage==THROUGH_SHOOTING_VOLTAGE){
       System.out.println("we're shooting trough");
@@ -58,7 +63,7 @@ public class CoralShooterCommand extends Command {
     // if we're intaking, we want to end either if it's been 5 seconds or the limit switch is
     // triggered
     // the limit switch is triggered if the value it's getting is true
-    // if our voltage is zero, we can just end, but to be safe also set speed to zero
+    // TODO from Vivien: if our voltage is zero, we can just end, but to be safe also set speed to zero
     // if we're outtaking, we want to end if it's been 1.5 seconds
     // in each case, we want to print what's causing the command to end,
     // set the motor voltage to 0, and return true
@@ -72,16 +77,18 @@ public class CoralShooterCommand extends Command {
     /* TODO: write the logic for when to end the command */
     // refer to the descriptions above to write this part
     if(shooterMotorVoltage>0){
-      if(timePassed>=5000 || limitSwitch==true){
+      if(timePassed>=5000 || limitSwitch==true){//TODO from Vivien: "limitSwitch" isn't a real variable you made. instead, use the limitSwitchValue() method that you wrote in the subsystem
+        //TODO from Vivien: love that you added these extra print statements! would be very helpful for testing
         if(timePassed>=5000){
           System.out.println("command ended, 5 second intake reached");
         }else{
           System.out.println("command ended, limit switch triggered");
         }
+        //TODO from Vivien: your command doesn't have access to ur motors, so for everything you have to say "coralShooterSubsystem.doThisThing()"
         motor.setVoltage(0);
         return true;
       }
-    }else if(outtaking){
+    }else if(outtaking){//TODO from Vivien: we know we're outtaking if shooterMotorVoltage is negative
       if(timePassed>=1500){
         System.out.println("command ended, 1.5 second outtake reached");
 

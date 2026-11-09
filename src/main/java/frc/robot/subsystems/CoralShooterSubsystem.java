@@ -4,7 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CoralShooterSubsystem extends SubsystemBase {
  // You need to have two TalonFX motors (left and right) and a DigitalInput limit switch
@@ -32,7 +38,8 @@ public class CoralShooterSubsystem extends SubsystemBase {
 
     // You must also instantiate your limit switch by creating a new DigitalInput object
     // Make sure to use the limit switch constant in Constants.java
-    /* TODO: instantiate your limit switch here */
+    /* instantiate your limit switch here */
+    //TODO from Vivien: you don't need the canbus name for limit switches!
     limitSwitch = new DigitalInput(Constants.LIMIT_SWITCH_CAN_ID, Constants.MECH_CANBUS_NAME);
   }
 
@@ -40,18 +47,27 @@ public class CoralShooterSubsystem extends SubsystemBase {
 
   // We need methods to set the motor voltage and to get the value of the limit switch
 
-  /* TODO: write a method to set motor voltage
+  /* write a method to set motor voltage
    * You can use the TalonFX method setVoltage() on each motor to give the motor the voltages
    */
+  //TODO from Vivien: just some formatting issues, you have too many semicolons and you forgot a }
+  //this should instead be:
+//  public void setRightMotorVoltage(double voltage){
+//     rightMotor.setVoltage(voltage);
+//  }
+//   public void setLeftMotorVoltage(double voltage){
+//     leftMotor.setVoltage(voltage);
+//   }
   public void setRightMotorVoltage(double voltage);{
     rightMotor.setVoltage(voltage);
     
   public void setLeftMotorVoltage(double voltage);{
     leftMotor.setVoltage(voltage);
   }
-  /* TODO: write a method to get the limit switch value
+  /* write a method to get the limit switch value
    * You can use the DigitalInput method get()
    */
+  //TODO from Vivien: limit switches are buttons that are either on or off. their value is a boolean, not a double
   public double limitSwitchValue(){
     limitSwitch.get(value);
       return value;
