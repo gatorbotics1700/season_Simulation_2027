@@ -11,6 +11,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CoralShooterSubsystem extends SubsystemBase {
   private TalonFX leftMotor;
@@ -42,11 +43,12 @@ public class CoralShooterSubsystem extends SubsystemBase {
 
   public void setMotorVoltage(double voltage){
     leftMotor.setVoltage(voltage);
-    rightMotor.setVoltage(voltage);/*public  TODO: write a method to set motor voltage
+    rightMotor.setVoltage(voltage);/*public  write a method to set motor voltage
    * You can use the TalonFX method setVoltage() on each motor to give the motor the voltages
   */}
 
-  public boolean getLimitSwitchValue(){/* TODO: write a method to get the limit switch value
+  public boolean getLimitSwitchValue(){/* write a method to get the limit switch value
    * You can use the DigitalInput method get()*/
   return limitSwitch.get();
 }
+//TODO from Vivien: you forgot one closing bracket } so ur code errors

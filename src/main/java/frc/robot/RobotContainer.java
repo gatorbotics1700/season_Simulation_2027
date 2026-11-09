@@ -44,9 +44,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //TODO from Vivien: remember when you use a constant to start it up with "Constants.BLA_BLA"
    codriver.a().onTrue(new CoralShooterCommand(coralShooter, ShootingL4)); // We need buttons for:
     codriver.b().onTrue(new CoralShooterCommand(coralShooter, shootingTrough));// 1. Shooting L4
+    //TODO from Vivien: "isIntaking" sounds like a boolean. instead, use the intakeVoltage
     codriver.x().onTrue(new CoralShooterCommand(coralShooter, IsIntaking));// 2. Shooting Trough
+    //TODO from Vivien: can't put "break" here, no allowsies. if a shooter is stopped, what voltage does it run at? hm...
     codriver.y().onTrue(new CoralShooterCommand(coralShooter, break));// 3. Intaking
     // 4. Stop
 

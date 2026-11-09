@@ -18,6 +18,7 @@ public final class Constants {
   // we need a value for the L4 shooting voltage, the trough shooting voltage, and the intake
   // voltage
   // shooting voltages should be negative, and the L4 value should be larger
+  //TODO from Vivien: perfect! for organizational reasons, make all these names ALL_CAPS_SEPARATED_WITH_HYPHENS
   public static final double L4shooterVoltage = -1.0;
   public static final double troughShootingVoltage = -0.1;
   public static final double intakeVoltage = 1.1;/* TODO: put your shooting voltages here */

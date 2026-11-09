@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.CoralShooterSubsystem;
 
 
@@ -14,8 +15,11 @@ public class CoralShooterCommand extends Command {
   private double startTime = 0;
   private CoralShooterSubsystem coralShooterSubsystem;
   private double shooterVoltage = 0;
+  //TODO from vivien: these booleans are never actually set to anything in ur code, so they don't provide any information.
+  //however you are still using them, which is like trying to use a dead phone to check the weather :(
   private boolean isIntaking;
   private boolean limitSwitch;
+  //TODO you should be getting these values from Constants.java, not making it again
   private double L4shooterVoltage;
   private double troughShootingVoltage;
   
@@ -24,12 +28,12 @@ public class CoralShooterCommand extends Command {
 
   // a variable to keep track of our voltage, and one to track the start time of the command
 
-  /* TODO: declare the CoralShooterSubsystem, voltage, and start time variables here */
+  /* declare the CoralShooterSubsystem, voltage, and start time variables here */
 
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
     this.coralShooterSubsystem = coralShooterSubsystem;
-    this.shooterVoltage = voltage;/* TODO: assign the values of the parameters to the variables you instantiated */
+    this.shooterVoltage = voltage;/* assign the values of the parameters to the variables you instantiated */
     addRequirements(coralShooterSubsystem);
   }
 
@@ -43,7 +47,10 @@ public class CoralShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //TODO from Vivien: this errors bc the method you wrote has a diff name than "setVoltage"
     coralShooterSubsystem.setVoltage(shooterVoltage);
+    //TODO from Vivien: to use constants, it would be smth like -
+    //else if(shooterVoltage == Constants.L4shooterVoltage)
     if (shooterVoltage >=0){
       System.out.println("intaking");
     }else if (shooterVoltage == L4shooterVoltage){
@@ -58,14 +65,18 @@ public class CoralShooterCommand extends Command {
     // if our voltage is equal to the L4 shooting voltage, we're shooting l4
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
-    /* TODO: set motor voltage */
+    /* set motor voltage */
 
-    /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    /* add print statements depending on the voltage to indicate the state the shooter is currently in */
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //TODO from Vivien: isIntaking and limitSwitch provide no information
+    //you have to figure out whether we're intaking based on the voltage(just like you did in the execute() method)
+    //and figure out the value of the limit switch based on the method you wrote in the subsystem (getLimitSwitchValue())
+    //TODO from Vivien: startTime doesn't actually tell you how much time has passed. you need to do System.currentTimeMillis()-startTime
 
         if (shooterVoltage == 0){
           return true;
