@@ -1,5 +1,10 @@
 package frc.robot.subsystems.mech;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.reflect.Method;
+
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
@@ -81,10 +86,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     motorConfig.MotionMagic.MotionMagicExpo_kV = 0.16;
     motorConfig.MotionMagic.MotionMagicExpo_kA = 0.2;
 
-    motorConfig
-            .SoftwareLimitSwitch
-            .ForwardSoftLimitThreshold = // TODO what does this  mean/maybe delete (ln 92-93)
-        metersToMotorPosition(MAX_HEIGHT);
 
     motorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = metersToMotorPosition(MIN_HEIGHT);
 
@@ -116,25 +117,48 @@ public class ElevatorSubsystem extends SubsystemBase {
       stop();
     }
 
-    if (atBottom && motorVelocity < 0) {
-      stop();
-    }
-    // TODO move the loggers into methods
-    wasAtBottom = atBottom;
-    SmartDashboard.putNumber("Elevator/HeightMeters", getElevatorPosition());
+        if (atBottom && motorVelocity < 0) {
+            stop();
+        }
 
-    SmartDashboard.putNumber("Elevator/TargetMeters", targetPosition);
 
-    SmartDashboard.putNumber("Elevator/MotorRotations", getCurrentPosition());
+  
 
-    SmartDashboard.putBoolean("Elevator/BottomLimit", atBottom);
+        private void logElevatorMethods(){
+          SmartDashboard.putBoolean(
+            "Elevator/AtTarget",
+            isAtTargetPosition()
+        );
+    
 
-    SmartDashboard.putBoolean("Elevator/TopLimit", atTop);
+   
+          SmartDashboard.putNumber(
+            "Elevator/HeightMeters",
+            getElevatorPosition()
+        );
 
-    SmartDashboard.putBoolean("Elevator/Homed", isHomed);
+        
+       SmartDashboard.putNumber(
+            "Elevator/TargetMeters",
+            targetPosition
+        );
+    
 
-    SmartDashboard.putBoolean("Elevator/AtTarget", isAtTargetPosition());
-  }
+    
+       SmartDashboard.putNumber(
+            "Elevator/MotorRotations",
+            getCurrentPosition()
+        );
+    
+
+    
+      SmartDashboard.putBoolean(
+            "Elevator/Homed",
+            isHomed
+        );
+        }
+
+
 
   private double metersToMotorPosition(double meters) {
     return (meters / DRUM_CIRCUMFERENCE) * GEAR_RATIO; // TODO what is drum circumfrence?
@@ -146,30 +170,54 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void moveToPosition(double meters) {
 
-    if (!isHomed) {
-      stop();
-      return;
-    }
+        if (!isHomed) {
+            stop();
+            return;
+        }
+        double safeHeight = meters;
+        
+        if(MIN_HEIGHT < safeHeight){
+           safeHeight = MIN_HEIGHT;
+        }else if(safeHeight > MAX_HEIGHT) {
+        safeHeight = MAX_HEIGHT;
+        }
 
-    double safeHeight =
-        Math.max(
-            MIN_HEIGHT, Math.min(MAX_HEIGHT, meters) // make this if statements- very confusing
-            );
+        if (safeHeight > MAX_HEIGHT) {
+            safeHeight = MIN_HEIGHT;
+        } else if (MIN_HEIGHT < safeHeight) {
+          safeHeight = MIN_HEIGHT;
+        }
+        
+        targetPosition = safeHeight; 
+        
+        if (safeHeight > MIN_HEIGHT) {
+          
+        } else {
+          
+        } 
+        
+        
+        
+        if (isAtTopLimit() &&
+            targetPosition > getElevatorPosition()) {
+            stop();
+            return;
+        }
 
-    targetPosition = safeHeight;
-    // TODO use target position and NOT safe height from this point onwards.
-    if (isAtTopLimit() && safeHeight > getElevatorPosition()) {
-      stop();
-      return;
-    }
+        if (isAtBottomLimit() &&
+            targetPosition < getElevatorPosition()) {
+            stop();
+            return;
+        }
 
-    if (isAtBottomLimit() && safeHeight < getElevatorPosition()) {
-      stop();
-      return;
-    }
+        elevatorMotor.setControl(
+            motionMagicRequest.withPosition(
+                metersToMotorPosition(safeHeight)
+            )
+        );
 
-    elevatorMotor.setControl(motionMagicRequest.withPosition(metersToMotorPosition(safeHeight)));
-  }
+        
+    } 
 
   public void setDesiredPosition(double rotations) {
     moveToPosition(motorPositionToMeters(rotations));
