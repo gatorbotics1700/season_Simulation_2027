@@ -16,11 +16,9 @@ package frc.robot;
 // import frc.robot.commands.AutoDriveCommand;
 // import frc.robot.commands.TeleopDriveCommand;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,8 +28,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveCommands;
-import frc.robot.commands.LineupCommand;
-import frc.robot.commands.LineupCommand.YOffset;
+import frc.robot.commands.ElevatorCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
@@ -39,6 +36,7 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import frc.robot.subsystems.mech.ElevatorSubsystem;
 import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionConstants;
 import frc.robot.subsystems.vision.VisionIOLimelight;
@@ -57,6 +55,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Vision vision;
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   // Controllers
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -70,12 +69,9 @@ public class RobotContainer {
 
   // Button Bindings
 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Named Commands
-
-    
 
     // Set up robot depending on mode
     switch (Constants.currentMode) {
@@ -151,6 +147,7 @@ public class RobotContainer {
     //     "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     // Configure the button bindings
+
     configureButtonBindings();
   }
 
@@ -222,21 +219,21 @@ public class RobotContainer {
                     drive)
                 .ignoringDisable(true));
 
-    controller
-        .x()
-        .onTrue(
-            Commands.runOnce(
-                () -> {
-                  drive.enableTargetPointFacing();
-                }));
+    // controller
+    //     .x()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //             () -> {
+    //               drive.enableTargetPointFacing();
+    //             }));
 
-    controller
-        .y()
-        .onTrue(
-            Commands.runOnce(
-                () -> {
-                  drive.disableTargetPointFacing();
-                }));
+    // controller
+    //     .y()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //             () -> {
+    //               drive.disableTargetPointFacing();
+    //             }));
 
     controller_two
         .back()
@@ -256,7 +253,19 @@ public class RobotContainer {
                 },
                 drive));
 
-    
+    controller
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () ->
+                    CommandScheduler.getInstance()
+                        .schedule(
+                            new ElevatorCommand(
+                                Constants.ELEVATOR_HEIGHT,
+                                elevatorSubsystem))) // TODO: include value of rotations in
+            // constants file
+            );
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

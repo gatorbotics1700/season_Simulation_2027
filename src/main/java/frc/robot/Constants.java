@@ -57,6 +57,8 @@ public final class Constants {
   public static final Distance CENTER_TO_POLE_OFFSET = Centimeters.of(16.5);
   public static final Distance ROBOT_RADIUS_WITH_BUMPERS = Centimeters.of(57);
 
-  public static final double GEAR_RATIO = 5/1;
-  
+  public static final double GEAR_RATIO = 5 / 1;
+
+  public static final double ELEVATOR_HEIGHT =
+      1; // TODO: set this to the height of the elevator in meters
 }
