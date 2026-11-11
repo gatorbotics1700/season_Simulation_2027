@@ -1,5 +1,8 @@
 package frc.robot.subsystems.mech;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.reflect.Method;
+
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -88,9 +91,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorConfig.MotionMagic.MotionMagicExpo_kA = 0.2;
 
 
-        motorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = //TODO what does this  mean/maybe delete (ln 92-93)
-            metersToMotorPosition(MAX_HEIGHT);
-
         motorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
             metersToMotorPosition(MIN_HEIGHT);
 
@@ -127,43 +127,43 @@ public class ElevatorSubsystem extends SubsystemBase {
         if (atBottom && motorVelocity < 0) {
             stop();
         }
-        // TODO move the loggers into methods 
-        wasAtBottom = atBottom;
-        SmartDashboard.putNumber(
+
+
+  
+
+        private void logElevatorMethods(){
+          SmartDashboard.putBoolean(
+            "Elevator/AtTarget",
+            isAtTargetPosition()
+        );
+    
+
+   
+          SmartDashboard.putNumber(
             "Elevator/HeightMeters",
             getElevatorPosition()
         );
 
-        SmartDashboard.putNumber(
+        
+       SmartDashboard.putNumber(
             "Elevator/TargetMeters",
             targetPosition
         );
+    
 
-        SmartDashboard.putNumber(
+    
+       SmartDashboard.putNumber(
             "Elevator/MotorRotations",
             getCurrentPosition()
         );
+    
 
-        SmartDashboard.putBoolean(
-            "Elevator/BottomLimit",
-            atBottom
-        );
-
-        SmartDashboard.putBoolean(
-            "Elevator/TopLimit",
-            atTop
-        );
-
-        SmartDashboard.putBoolean(
+    
+      SmartDashboard.putBoolean(
             "Elevator/Homed",
             isHomed
         );
-
-        SmartDashboard.putBoolean(
-            "Elevator/AtTarget",
-            isAtTargetPosition()
-        );
-    }
+        }
 
 
 
@@ -181,22 +181,38 @@ public class ElevatorSubsystem extends SubsystemBase {
             stop();
             return;
         }
-
-        double safeHeight = Math.max(
-            MIN_HEIGHT,
-            Math.min(MAX_HEIGHT, meters) // make this if statements- very confusing 
-        );
+        double safeHeight;
+        double group1Max;
+        if(MIN_HEIGHT < MAX_HEIGHT){
+          
+        }else{
+          
+        }
+        // double safeHeight = Math.max(
+        //     MIN_HEIGHT,
+        //     Math.min(MAX_HEIGHT, meters) // TODO make this if statements- very confusing 
+        // );
 
         targetPosition = safeHeight; 
-        // TODO use target position and NOT safe height from this point onwards.
+        
+        if (safeHeight > MIN_HEIGHT) {
+          
+        } else {
+          
+        } 
+        
+        
+
+  
+        
         if (isAtTopLimit() &&
-            safeHeight > getElevatorPosition()) {
+            targetPosition > getElevatorPosition()) {
             stop();
             return;
         }
 
         if (isAtBottomLimit() &&
-            safeHeight < getElevatorPosition()) {
+            targetPosition < getElevatorPosition()) {
             stop();
             return;
         }
@@ -206,6 +222,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                 metersToMotorPosition(safeHeight)
             )
         );
+
+        
     } 
 
     public void setDesiredPosition(double rotations) {
