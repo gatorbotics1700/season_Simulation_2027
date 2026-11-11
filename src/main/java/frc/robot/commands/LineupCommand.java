@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
-
 public class LineupCommand {
 
   public LineupCommand() {}
@@ -26,7 +25,7 @@ public class LineupCommand {
     // rotating 180 (we want to face the reef)
     // left and right poles of the reef are from the perspective of looking from the outside of the
     // reef
-    //the below code is kind of just there for reference
+    // the below code is kind of just there for reference
     /*if (yOffset == YOffset.Left) {
         // Center to pole offset is negative because from april tag perspective, the left pole is in
         // the negative y direction
