@@ -15,6 +15,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.Centimeters;
 
+import com.ctre.phoenix6.CANBus;
+
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.util.RobotConfigLoader;
@@ -49,6 +51,31 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
+  public static final CANBus driveCANBus =
+        new CANBus(
+            RobotConfigLoader.getString("tuner.drive_canbus_name").equals("null")
+                ? ""
+                : RobotConfigLoader.getString("tuner.drive_canbus_name"),
+            "U/logs");
+
+    // Mechanism CAN bus - reuses driveCANBus if they're the same physical bus
+    public static final CANBus mechCANBus;
+
+    static {
+      String driveBusName = driveCANBus.getName();
+      String mechBusName =
+          RobotConfigLoader.getString("tuner.mech_canbus_name").equals("null")
+              ? ""
+              : RobotConfigLoader.getString("tuner.mech_canbus_name");
+
+      // If both buses have the same name, reuse the same object
+      if (driveBusName.equals(mechBusName)) {
+        mechCANBus = driveCANBus;
+      } else {
+        mechCANBus = new CANBus(mechBusName, "./logs/example.hoot");
+      }
+    }
 
   public static final int KRAKEN_TICKS_PER_REV = 2048;
 
