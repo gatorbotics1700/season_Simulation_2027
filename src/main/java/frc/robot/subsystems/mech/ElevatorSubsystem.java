@@ -181,18 +181,20 @@ public class ElevatorSubsystem extends SubsystemBase {
             stop();
             return;
         }
-        double safeHeight;
-        double group1Max;
-        if(MIN_HEIGHT < MAX_HEIGHT){
-          
-        }else{
-          
+        double safeHeight = meters;
+        
+        if(MIN_HEIGHT < safeHeight){
+           safeHeight = MIN_HEIGHT;
+        }else if(safeHeight > MAX_HEIGHT) {
+        safeHeight = MAX_HEIGHT;
         }
-        // double safeHeight = Math.max(
-        //     MIN_HEIGHT,
-        //     Math.min(MAX_HEIGHT, meters) // TODO make this if statements- very confusing 
-        // );
 
+        if (safeHeight > MAX_HEIGHT) {
+            safeHeight = MIN_HEIGHT;
+        } else if (MIN_HEIGHT < safeHeight) {
+          safeHeight = MIN_HEIGHT;
+        }
+        
         targetPosition = safeHeight; 
         
         if (safeHeight > MIN_HEIGHT) {
@@ -202,8 +204,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         } 
         
         
-
-  
         
         if (isAtTopLimit() &&
             targetPosition > getElevatorPosition()) {
