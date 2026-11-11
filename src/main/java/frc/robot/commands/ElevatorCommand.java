@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mech.ElevatorSubsystem;
-
+// TODO set my meters instead of rotations 
 public class ElevatorCommand extends Command {
 
     private final ElevatorSubsystem elevatorSubsystem;
@@ -23,7 +23,7 @@ public class ElevatorCommand extends Command {
 
     @Override
     public void initialize() {
-        elevatorSubsystem.setDesiredPosition(rotations);
+        elevatorSubsystem.setDesiredPosition(rotations); //use move to position
     }
 
     @Override

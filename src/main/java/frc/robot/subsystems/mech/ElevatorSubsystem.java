@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    
+    // TODO put constants in constants.java file 
     private static final int MOTOR_ID = 0; // TODO: Verify CAN ID
     private static final double GEAR_RATIO = 5.0;
     private static final double DRUM_CIRCUMFERENCE = 0.1; // TODO: Replace with actual drum circumference
@@ -64,7 +64,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private double targetPosition = 0.0;
     private boolean isHomed = false;
     private boolean wasAtBottom = false;
-    private boolean wasAtTop = false;
 
     public ElevatorSubsystem() {
 
@@ -89,7 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         motorConfig.MotionMagic.MotionMagicExpo_kA = 0.2;
 
 
-        motorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold =
+        motorConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = //TODO what does this  mean/maybe delete (ln 92-93)
             metersToMotorPosition(MAX_HEIGHT);
 
         motorConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold =
@@ -106,12 +105,74 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
     }
 
+    @Override
+    public void periodic() {
+
+        updatePID();
+
+        boolean atBottom = isAtBottomLimit();
+        boolean atTop = isAtTopLimit();
+
+        if (atBottom && !wasAtBottom) {
+            zeroElevator();
+        }
+
+        double motorVelocity =
+            elevatorMotor.getVelocity().getValueAsDouble();
+
+        if (atTop && motorVelocity > 0) {
+            stop();
+        }
+
+        if (atBottom && motorVelocity < 0) {
+            stop();
+        }
+        // TODO move the loggers into methods 
+        wasAtBottom = atBottom;
+        SmartDashboard.putNumber(
+            "Elevator/HeightMeters",
+            getElevatorPosition()
+        );
+
+        SmartDashboard.putNumber(
+            "Elevator/TargetMeters",
+            targetPosition
+        );
+
+        SmartDashboard.putNumber(
+            "Elevator/MotorRotations",
+            getCurrentPosition()
+        );
+
+        SmartDashboard.putBoolean(
+            "Elevator/BottomLimit",
+            atBottom
+        );
+
+        SmartDashboard.putBoolean(
+            "Elevator/TopLimit",
+            atTop
+        );
+
+        SmartDashboard.putBoolean(
+            "Elevator/Homed",
+            isHomed
+        );
+
+        SmartDashboard.putBoolean(
+            "Elevator/AtTarget",
+            isAtTargetPosition()
+        );
+    }
+
+
+
     private double metersToMotorPosition(double meters) {
-        return (meters / DRUM_CIRCUMFERENCE) * GEAR_RATIO;
+        return (meters / DRUM_CIRCUMFERENCE) * GEAR_RATIO; // TODO what is drum circumfrence?
     }
 
     private double motorPositionToMeters(double rotations) {
-        return (rotations / GEAR_RATIO) * DRUM_CIRCUMFERENCE;
+        return (rotations / GEAR_RATIO) * DRUM_CIRCUMFERENCE; // position is unclear- just watch out for 
     }
 
     public void moveToPosition(double meters) {
@@ -123,10 +184,11 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         double safeHeight = Math.max(
             MIN_HEIGHT,
-            Math.min(MAX_HEIGHT, meters)
+            Math.min(MAX_HEIGHT, meters) // make this if statements- very confusing 
         );
 
-        targetPosition = safeHeight;
+        targetPosition = safeHeight; 
+        // TODO use target position and NOT safe height from this point onwards.
         if (isAtTopLimit() &&
             safeHeight > getElevatorPosition()) {
             stop();
@@ -144,7 +206,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                 metersToMotorPosition(safeHeight)
             )
         );
-    }
+    } 
 
     public void setDesiredPosition(double rotations) {
         moveToPosition(motorPositionToMeters(rotations));
@@ -176,12 +238,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         elevatorMotor.set(speed);
     }
-
+    // TODO log values of the limit switches, desired position, anything that would be helpful. 
     public void zeroElevator() {
 
         if (!isAtBottomLimit()) {
             return;
-        }
+        } 
 
         elevatorMotor.stopMotor();
         elevatorMotor.setPosition(0.0);
@@ -207,9 +269,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     public double getElevatorPosition() {
         return motorPositionToMeters(getCurrentPosition());
     }
-    public double getElevatorTopPosition() {
-        return getElevatorPosition() * 0.489;
-    }
 
     public double getTargetPosition() {
         return targetPosition;
@@ -218,7 +277,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public boolean atDesiredPosition(
         double desiredRotations,
         double errorRotations
-    ) {
+    ) { //TODO rename target postion to have meters 
         return Math.abs(
             getCurrentPosition() - desiredRotations
         ) <= errorRotations;
@@ -229,14 +288,14 @@ public class ElevatorSubsystem extends SubsystemBase {
             Math.abs(getElevatorPosition() - targetPosition)
                 <= POSITION_TOLERANCE;
     }
-
+    // check with build to see whether pressed is true or false 
     public boolean isAtBottomLimit() {
         return !bottomLimitSwitch.get();
     }
 
     public boolean isAtTopLimit() {
         return !topLimitSwitch.get();
-    }
+    } 
 
     public void stop() {
         elevatorMotor.stopMotor();
@@ -274,64 +333,5 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorMotor.getConfigurator().apply(slot0);
         }
     }
-    @Override
-    public void periodic() {
-
-        updatePID();
-
-        boolean atBottom = isAtBottomLimit();
-        boolean atTop = isAtTopLimit();
-
-        if (atBottom && !wasAtBottom) {
-            zeroElevator();
-        }
-
-        double motorVelocity =
-            elevatorMotor.getVelocity().getValueAsDouble();
-
-        if (atTop && motorVelocity > 0) {
-            stop();
-        }
-
-        if (atBottom && motorVelocity < 0) {
-            stop();
-        }
-
-        wasAtBottom = atBottom;
-        wasAtTop = atTop;
-        SmartDashboard.putNumber(
-            "Elevator/HeightMeters",
-            getElevatorPosition()
-        );
-
-        SmartDashboard.putNumber(
-            "Elevator/TargetMeters",
-            targetPosition
-        );
-
-        SmartDashboard.putNumber(
-            "Elevator/MotorRotations",
-            getCurrentPosition()
-        );
-
-        SmartDashboard.putBoolean(
-            "Elevator/BottomLimit",
-            atBottom
-        );
-
-        SmartDashboard.putBoolean(
-            "Elevator/TopLimit",
-            atTop
-        );
-
-        SmartDashboard.putBoolean(
-            "Elevator/Homed",
-            isHomed
-        );
-
-        SmartDashboard.putBoolean(
-            "Elevator/AtTarget",
-            isAtTargetPosition()
-        );
-    }
 }
+ 
