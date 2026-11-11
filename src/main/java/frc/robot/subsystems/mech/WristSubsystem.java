@@ -66,7 +66,8 @@ public class WristSubsystem extends SubsystemBase {
     //TODO: Configure PID gains, current limits, other safety things, etc
     pid = new PIDController(0.1, 0.01, 0.001); // Placeholder PID gains, created and set PID
     //TODO ki, kp, and kd should be tuneables
-    currentPosition = Rotation2d.fromDegrees(0); //placeholder
+    currentPivotPosition = Rotation2d.fromDegrees(0);
+    currentRotationPosition = Rotation2d.fromDegrees(0); 
 
 
 
