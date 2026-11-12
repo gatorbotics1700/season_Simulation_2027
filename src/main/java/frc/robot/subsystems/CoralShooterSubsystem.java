@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -13,15 +16,19 @@ public class CoralShooterSubsystem extends SubsystemBase {
   // You need to have two TalonFX motors (left and right) and a DigitalInput limit switch
   /* TODO: declare your motors and limit switch here */
 
+  //TODO from Vivien make all these variables "private"
   TalonFX leftCoralShooterMotor;
   TalonFX rightCoralShooterMotor;
+  //TODO from Vivien a limit switch is a DigitalInput, not a double
   double limitSwitch;
 
   /** Creates a new CoralShooterSubsystem. */
   public CoralShooterSubsystem() {
     // To instantiate your motor, you want to create a new TalonFX object
     // Make sure to include both the CAN ID and the CANBus name from Constants.java
-    /* TODO: instantiate your motors here */
+    /* instantiate your motors here */
+    //TODO from Vivien take the canids from Constants.java, bad to just have floating numbers :(
+    //TODO from Vivien, also remember to include the CANBus name
    leftCoralShooterMotor = new TalonFX(0);
    rightCoralShooterMotor = new TalonFX(1);
 
@@ -29,16 +36,19 @@ public class CoralShooterSubsystem extends SubsystemBase {
     // opposite directions
     // Since the wheels have to spin the same direction but the motors are mounted on opposite sides
     /* TODO: put your right motor name here and uncomment the next few lines */
-     rightCoralShooterMotor.getConfigurator()
-      .apply()
-     rightCoralShooterMotor = new TalonFXConfiguration()
+     rightCoralShooterMotor.getConfigurator().apply(
+   new TalonFXConfiguration()
           .withMotorOutput(
-    //          new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)));
+              new MotorOutputConfigs().withInverted(InvertedValue.Clockwise_Positive)));
 
     // You must also instantiate your limit switch by creating a new DigitalInput object
     // Make sure to use the limit switch constant in Constants.java
-    /* TODO: instantiate your limit switch here */
-   DigitalInput limitSwitch = new DigitalInput(Constants.java) 
+    /* instantiate your limit switch here */
+    //TODO from Vivien: make sure you're just instantiating here not declaring
+    //so your sentence should start with "limit switch..."
+    //TODO from Vivien: make sure you're including the name of the limit switch port
+    //so it'll look a little like "Constants.YOUR_VARIABLE_HERE"
+   DigitalInput limitSwitch = new DigitalInput(Constants.java);
 
 
   }
@@ -47,17 +57,20 @@ public class CoralShooterSubsystem extends SubsystemBase {
 
   // We need methods to set the motor voltage and to get the value of the limit switch
 
-  /* TODO: write a method to set motor voltage
+  /* write a method to set motor voltage
 
    * You can use the TalonFX method setVoltage() on each motor to give the motor the voltages
    */
 public void setMotorVoltage(int voltage) {
   leftCoralShooterMotor.setVoltage(voltage); 
+  //TODO from Vivien: good! just make sure you're also setting the voltage of the right motor
 }
-  /* TODO: write a method to get the limit switch value
+  /* write a method to get the limit switch value
    * You can use the DigitalInput method get()
    */
-  public void setDigitalInput(int voltage) {
+  
+  //TODO from Vivien: this should be a getter not a setter
+   public void setDigitalInput(int voltage) {
     limitswitch.setlimitSwitch(voltage);
   }
 }

@@ -14,7 +14,8 @@ import frc.robot.subsystems.CoralShooterSubsystem;
 public class CoralShooterCommand extends Command {
   // The command needs to have an instance of the CoralShooterSubsystem,
   // a variable to keep track of our voltage, and one to track the start time of the command
-CoralShooterSubsystem coralShooter;
+//TODO from Vivien: good!
+  CoralShooterSubsystem coralShooter;
 double coralShooterVoltage = 0;
 double startTime = 0;
 
