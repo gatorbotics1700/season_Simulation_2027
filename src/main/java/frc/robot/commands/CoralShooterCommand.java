@@ -23,7 +23,7 @@ double startTime = 0;
 
   /** Creates a new CoralShooterCommand. */
   public CoralShooterCommand(CoralShooterSubsystem coralShooterSubsystem, double voltage) {
-    /* TODO: assign the values of the parameters to the variables you instantiated */
+    /* assign the values of the parameters to the variables you instantiated */
     coralShooter = coralShooterSubsystem;
     coralShooterVoltage = voltage;
     
@@ -34,7 +34,7 @@ double startTime = 0;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    /* TODO: initialize the start time variable with the current time */
+    /* initialize the start time variable with the current time */
     // HINT: System.currentTimeMillis() gets you the current time
       startTime = System.currentTimeMillis();
   }
@@ -50,10 +50,13 @@ double startTime = 0;
     // if our voltage is equal to the trough shooting voltage, we're shooting trough
 
     /* TODO: set motor voltage */
+    //TODO from Vivien: you wrote the method to set the motor voltage in your subsystem, it's called setMotorVoltage()
      coralShooter.setDefaultCommand(coralShooterVoltage);
 
-    /* TODO: add print statements depending on the voltage to indicate the state the shooter is currently in */
+    /* add print statements depending on the voltage to indicate the state the shooter is currently in */
      
+    //TODO from Vivien you also have to account for whether the shooter is intaking or shooting!
+    //also negative voltages are allowed! keep that in mind...
     if (coralShooterVoltage > 0) {
       print("running");
     } else {
@@ -77,13 +80,16 @@ double startTime = 0;
     /* TODO: calculate how much time has passed and store it in a variable */
     // you have the start time and can get the current time
     // this value is stored in milliseconds
+    //TODO from Vivien: this calculates the endTime currently, but what you really want is the different between endTime and startTime
      double endTime = System.currentTimeMillis();
 
     /* TODO: write the logic for when to end the command */
+
+    //TODO from Vivien: there's just a lot of unfinished stuff here, for example the time checking thing
     // refer to the descriptions above to write this part
       if (Voltage = 0 )) {
         print ("end")
-        speed = zero;
+        speed = zero;//TODO from Vivien: set speed to zero using the method from the subsystem
       } else {
         print ("continue")
       }
